@@ -1,0 +1,95 @@
+﻿@model SV21T1020052.Shop.Models.OrderInitModel
+
+@{
+    ViewBag.Title = "Lập đơn hàng";
+}
+
+<h4>Lập đơn hàng</h4>
+
+@using (Html.BeginForm("InitOrder", "Order", FormMethod.Post, new { id = "frmOrderInit" }))
+{
+    <div class="form-group">
+        <label for="customerID">Khách hàng:</label>
+        <input type="text" id="customerID" name="CustomerID" class="form-control" placeholder="Nhập tên khách hàng" />
+        <span id="customerIDError" class="text-danger" style="display:none;">Vui lòng nhập tên khách hàng.</span>
+    </div>
+
+    <div class="form-group">
+        <label for="deliveryProvince">Tỉnh/thành:</label>
+        <select id="deliveryProvince" name="DeliveryProvince" class="form-control">
+            <option value="">-- Chọn tỉnh/thành --</option>
+            <option value="Hà Nội">Hà Nội</option>
+            <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+            <option value="Đà Nẵng">Đà Nẵng</option>
+            <option value="An Giang">An Giang</option>
+            <!-- Các tùy chọn tỉnh thành -->
+        </select>
+        <span id="deliveryProvinceError" class="text-danger" style="display:none;">Vui lòng chọn tỉnh/thành.</span>
+    </div>
+
+    <div class="form-group">
+        <label for="deliveryAddress">Địa chỉ nhận hàng:</label>
+        <input type="text" id="deliveryAddress" name="DeliveryAddress" class="form-control" />
+        <span id="deliveryAddressError" class="text-danger" style="display:none;">Vui lòng nhập địa chỉ nhận hàng.</span>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" id="payButton" class="btn btn-primary">Lập đơn hàng</button>
+    </div>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#payButton').click(function (e) {
+                e.preventDefault(); // Ngừng submit form mặc định
+
+                // Ẩn tất cả thông báo lỗi trước
+                $('#customerIDError').hide();
+                $('#deliveryProvinceError').hide();
+                $('#deliveryAddressError').hide();
+
+                // Lấy giá trị từ các trường nhập liệu
+                var customerID = $('#customerID').val().trim();
+                var deliveryProvince = $('#deliveryProvince').val().trim();
+                var deliveryAddress = $('#deliveryAddress').val().trim();
+
+                var hasError = false;
+
+                // Kiểm tra từng trường hợp
+                if (!customerID) {
+                    $('#customerIDError').show(); // Hiển thị thông báo lỗi
+                    hasError = true;
+                }
+                if (!deliveryProvince) {
+                    $('#deliveryProvinceError').show(); // Hiển thị thông báo lỗi
+                    hasError = true;
+                }
+                if (!deliveryAddress) {
+                    $('#deliveryAddressError').show(); // Hiển thị thông báo lỗi
+                    hasError = true;
+                }
+
+                // Nếu có lỗi, ngừng việc gửi form
+                if (hasError) {
+                    return false; // Dừng gửi form
+                } else {
+                    // Nếu không có lỗi, hiển thị thông báo thành công và chuyển hướng
+                    Swal.fire({
+                        title: 'Thanh toán thành công!',
+                        text: 'Đơn hàng của bạn đã được xác nhận và đang chờ xử lý.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Chuyển hướng đến trang TrackingOrder.cshtml
+                            window.location.href = '@Url.Action("TrackOrder", "Tracking")';
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

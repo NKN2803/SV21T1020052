@@ -1,0 +1,263 @@
+﻿<header class="main-header">
+    <!-- Logo -->
+    <a href="~/" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b>NKN</b></span>
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><b>NKN</b>Shop</span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                @{
+                    var userData = User.GetUserData();
+                    if (userData != null)
+                    {
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="~/images/emloyees/@userData.Photo" class="user-image" alt="User Image">
+                                <span class="hidden-xs">@userData.DisplayName</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <img src="~/images/employees/@userData.Photo" class="img-circle" alt="User Image">
+
+                                    <p>
+                                        @userData.DisplayName
+                                    </p>
+                                </li>
+
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="~/Account/ChangePassword" class="btn btn-default btn-flat">Đổi mật khẩu</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="~/Account/Logout" class="btn btn-default btn-flat">Thoát</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                }
+
+
+            </ul>
+        </div>
+    </nav>
+</header>
+<style>
+    /* General Styles */
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    /* Main Header */
+    .main-header {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+        text-decoration: none;
+        color: white;
+    }
+
+        .logo:hover {
+            text-decoration: underline;
+        }
+
+    .header-actions .action-btn {
+        color: white;
+        font-size: 1.2rem;
+        text-decoration: none;
+        position: relative;
+    }
+
+        .header-actions .action-btn:hover {
+            color: #ddd;
+        }
+
+    .header-actions .cart-icon {
+        position: relative;
+    }
+
+    .cart-count {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background-color: red;
+        color: white;
+        font-size: 0.8rem;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+
+    /* Navbar */
+    .navbar .nav-link {
+        color: white;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+        .navbar .nav-link:hover {
+            color: #ddd;
+        }
+
+    /* Dropdown Menu */
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: #343a40;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        display: none;
+        min-width: 200px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+
+        .dropdown-menu li {
+            list-style: none;
+        }
+
+        .dropdown-menu a {
+            color: #ddd;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+        }
+
+            .dropdown-menu a:hover {
+                background-color: #007bff;
+                color: white;
+            }
+
+    .header-actions .dropdown-toggle:hover + .dropdown-menu {
+        display: block;
+    }
+
+    .user-header img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
+
+    .user-footer a {
+        display: block;
+        padding: 10px;
+        color: #ddd;
+        text-decoration: none;
+    }
+
+        .user-footer a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+    /* Search Bar */
+    .search-form {
+        position: relative;
+    }
+
+    #search-input {
+        padding: 12px 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+        #search-input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+    .search-form button {
+        padding: 10px 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .search-form button:hover {
+            background-color: #0056b3;
+        }
+
+    /* Search Results */
+    .search-results {
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        max-height: 300px;
+        overflow-y: auto;
+        z-index: 1000;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: none;
+    }
+
+    .product-item-search {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #f1f1f1;
+        text-decoration: none;
+        color: #333;
+    }
+
+        .product-item-search:hover {
+            background-color: #f9f9f9;
+        }
+
+        .product-item-search img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .product-item-search .product-info {
+            flex-grow: 1;
+        }
+
+        .product-item-search .product-name {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .product-item-search .product-price {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .product-item-search .original-price {
+            text-decoration: line-through;
+            color: #dc3545;
+            margin-left: 10px;
+        }
+
+    /* No Results Message */
+    .no-results {
+        padding: 10px;
+        color: #666;
+        text-align: center;
+    }
+</style>

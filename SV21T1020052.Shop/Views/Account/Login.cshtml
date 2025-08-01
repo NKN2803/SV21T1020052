@@ -1,0 +1,180 @@
+﻿@{
+    Layout = null; //để không hiển thị layout khi người dùng chưa đăng nhập
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TNP Shop - Đăng nhập</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        /* Toàn bộ giao diện */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Giữ chiều cao của trang là toàn bộ chiều cao cửa sổ */
+            background-color: #f7fafc;
+            font-family: 'Arial', sans-serif;
+            margin: 0; /* Loại bỏ margin mặc định */
+            padding: 10px; /* Đảm bảo form không chạm vào cạnh màn hình */
+        }
+
+        /* Form đăng nhập */
+        .auth-form {
+            background-color: #ffffff;
+            padding: 5%; /* Dùng % để tương thích kích thước */
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px; /* Giới hạn độ rộng tối đa */
+            box-sizing: border-box; /* Đảm bảo kích thước tính toán chính xác */
+        }
+
+        /* Tiêu đề form */
+        .auth-title {
+            font-size: 1.5rem; /* Kích thước chữ */
+            font-weight: 700;
+            text-align: center;
+            color: #333;
+            margin-bottom: 1.5rem; /* Sử dụng rem để tương thích kích thước */
+            text-transform: uppercase;
+        }
+
+        /* Các trường nhập dữ liệu */
+        .form-group {
+            margin-bottom: 1rem; /* Khoảng cách giữa các trường */
+        }
+
+            .form-group label {
+                font-size: 0.9rem;
+                font-weight: 600;
+                color: #555;
+            }
+
+            .form-group input {
+                padding: 12px;
+                font-size: 1rem;
+                width: 100%;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                background-color: #f9f9f9;
+                transition: all 0.3s ease;
+            }
+
+                .form-group input:focus {
+                    border-color: #4c51bf;
+                    outline: none;
+                    background-color: #fff;
+                }
+
+        /* Nút đăng nhập */
+        .btn-block {
+            background-color: #4c51bf;
+            color: white;
+            font-size: 1.1rem;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+            .btn-block:hover {
+                background-color: #3e44b3;
+                transform: translateY(-2px);
+            }
+
+        /* Liên kết quên mật khẩu */
+        .forgot-password {
+            font-size: 0.9rem;
+            color: #4c51bf;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+            .forgot-password:hover {
+                text-decoration: underline;
+            }
+
+        /* Footer */
+        .footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        /* Linh hoạt kích thước cho màn hình nhỏ hơn */
+        .auth-form {
+            padding: 4%; /* Padding điều chỉnh tự động theo kích thước màn hình */
+        }
+
+        .auth-title {
+            font-size: 1.4rem; /* Điều chỉnh nhỏ hơn tự nhiên */
+        }
+
+        .footer {
+            font-size: 0.8rem; /* Nhỏ hơn với các thiết bị nhỏ */
+        }
+    </style>
+
+</head>
+<body class="hold-transition login-page">
+    <div class="auth-container">
+        <div class="auth-form">
+            <h2 class="auth-title">Đăng nhập vào tài khoản</h2>
+
+            <form action="~/Account/Login" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <label for="username">Tên đăng nhập:</label>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Nhập tên đăng nhập của bạn" value="@ViewBag.Username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Mật khẩu:</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Nhập mật khẩu của bạn" required>
+                </div>
+
+                <!-- Hiển thị lỗi nếu có -->
+                <div class="row">
+                    <div class="col-12">
+                        @Html.ValidationMessage("Error", new { @style = "color:#f00" })
+                    </div>
+                </div>
+
+                <!-- Liên kết quên mật khẩu nằm góc phải -->
+                <div class="d-flex justify-content-between mt-3">
+                    <a href="~/Account/ChangePassword" class="forgot-password">Đổi mật khẩu</a>
+                </div>
+
+                <!-- Nút đăng nhập -->
+                <div class="form-group text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container text-center">
+            <p>&copy; 2024 TNP Shop - Version 2.4</p>
+            <p>Chúng tôi cam kết mang đến sản phẩm chất lượng với dịch vụ tuyệt vời!</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

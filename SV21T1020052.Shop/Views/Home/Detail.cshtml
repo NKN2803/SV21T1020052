@@ -1,0 +1,273 @@
+﻿@model SV21T1020052.Shop.Models.ProductDetailModel
+@{
+    ViewData["Title"] = Model.Product.ProductName;
+}
+
+<div class="product-detail-container">
+    <div class="row">
+        <!-- Product Image Section -->
+        <div class="col-md-6">
+            <div class="main-image-container">
+                <img src="@(string.IsNullOrEmpty(Model.Product.Photo) ? Url.Content("~/themes/dist/img/nophoto.jpg") : Url.Content("~/" + Model.Product.Photo))"
+                     alt="@Model.Product.ProductName" class="main-product-image
+            </div>
+        </div>
+
+        <!-- Product Information Section -->
+        <div class="col-md-6">
+            <div class="product-info-content">
+                <h1 class="product-detail">@Model.Product.ProductName</h1>
+                <div class="product-price">@Model.Product.Price.ToString("#,0") đ</div>
+
+                @if (!string.IsNullOrEmpty(Model.Product.Description))
+                {
+                    <div class="product-description mt-3">
+                        <strong>Mô tả:</strong> @Html.Raw(Model.Product.Description)
+                    </div>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.Product.Unit))
+                {
+                    <div class="product-unit mt-2">
+                        <strong>Đơn vị:</strong> @Model.Product.Unit
+                    </div>
+                }
+
+                <div class="purchase-section mt-4">
+                    <div class="quantity-control">
+                        <label for="quantity">Số lượng:</label>
+                        <div class="quantity-selector d-flex align-items-center">
+                            <button type="button" class="quantity-btn minus">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number" id="quantity" class="quantity-input" value="1" min="1">
+                            <button type="button" class="quantity-btn plus">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button class="add-to-cart-button-detail mt-3" data-product-id="@Model.Product.ProductID">
+                        <i class="fas fa-shopping-cart"></i>
+                        Thêm vào giỏ hàng
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.quantity-btn').click(function () {
+                var input = $('#quantity');
+                var value = parseInt(input.val());
+                if ($(this).hasClass('minus') && value > 1) {
+                    input.val(value - 1);
+                } else if ($(this).hasClass('plus')) {
+                    input.val(value + 1);
+                }
+            });
+
+            $('.add-to-cart-button-detail').click(function (e) {
+                e.preventDefault();
+                var button = $(this);
+                var productId = button.data('product-id');
+                var quantity = $('#quantity').val();
+                button.prop('disabled', true);
+                button.html('<i class="fas fa-spinner fa-spin"></i> Đang thêm...');
+
+                $.ajax({
+                    url: '/Cart/AddToCart',
+                    type: 'POST',
+                    data: {
+                        productId: productId,
+                        quantity: quantity
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công!',
+                                text: response.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            if ($('.cart-count').length) {
+                                $('.cart-count').text(response.cartCount);
+                            }
+                        }
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: 'Có lỗi xảy ra khi thêm vào giỏ hàng!'
+                        });
+                    },
+                    complete: function () {
+                        button.prop('disabled', false);
+                        button.html('<i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng');
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+<style>
+    .product-detail-container {
+        max-width: 1400px;
+        margin: 50px auto;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 50px;
+        font-family: 'Segoe UI', sans-serif;
+        color: #333;
+    }
+
+    .col-md-6 {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .main-image-container {
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        max-width: 600px;
+        text-align: center;
+    }
+
+    .main-product-image {
+        width: 100%;
+        max-height: 600px;
+        object-fit: contain;
+        border-radius: 10px;
+        transition: transform 0.4s ease;
+    }
+
+        .main-product-image:hover {
+            transform: scale(1.08);
+        }
+
+    .product-info-content {
+        flex: 1;
+        max-width: 600px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .product-detail {
+        font-size: 40px;
+        font-weight: 800;
+        color: #222;
+        text-align: left;
+    }
+
+    .product-price {
+        font-size: 32px;
+        color: #e94560;
+        font-weight: bold;
+    }
+
+    .product-description,
+    .product-unit {
+        font-size: 18px;
+        color: #555;
+        line-height: 1.7;
+    }
+
+    .purchase-section {
+        margin-top: 25px;
+    }
+
+    .quantity-control {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .quantity-selector {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .quantity-btn {
+        background: #f1f1f1;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 10px 14px;
+        cursor: pointer;
+        font-size: 20px;
+        transition: 0.3s;
+    }
+
+        .quantity-btn:hover {
+            background: #e94560;
+            border-color: #e94560;
+            color: white;
+        }
+
+    .quantity-input {
+        width: 80px;
+        text-align: center;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 18px;
+        padding: 8px;
+    }
+
+    .add-to-cart-button-detail {
+        margin-top: 25px;
+        background: #e94560;
+        color: white;
+        border: none;
+        padding: 16px;
+        border-radius: 10px;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 0 6px 15px rgba(233, 69, 96, 0.5);
+    }
+
+        .add-to-cart-button-detail:hover {
+            background: #ff5b78;
+            box-shadow: 0 8px 20px rgba(233, 69, 96, 0.7);
+        }
+
+    @@media (max-width: 992px) {
+        .product-detail-container
+
+    {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .col-md-6 {
+        max-width: 100%;
+    }
+
+    .product-info-content {
+        align-items: center;
+    }
+
+    .product-detail {
+        text-align: center;
+    }
+
+    }
+</style>

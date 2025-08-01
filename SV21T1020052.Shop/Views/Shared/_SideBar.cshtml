@@ -1,0 +1,118 @@
+﻿@model ProductModel
+<div class="sidebar-container">
+    <!-- Danh mục sản phẩm -->
+    <div class="sidebar-section">
+        <h3 class="section-title">Danh mục sản phẩm</h3>
+        <div class="category-list">
+            @foreach (var category in Model.Categories)
+            {
+                <div class="category-item">
+                    <a href="@Url.Action("Index", "Product", new { categoryId = category.CategoryID })"
+                       class="category-link @((Model.SearchInput.CategoryID == category.CategoryID) ? "active" : "")">
+
+                        @{
+                            string iconClass = category.CategoryName.ToLower() switch
+                            {
+                                var name when name.Contains("bàn ghế") || name.Contains("nội thất") => "fas fa-couch",
+                                var name when name.Contains("điện tử") => "fas fa-tv",
+                                var name when name.Contains("đồ chơi") || name.Contains("phụ kiện") => "fas fa-gamepad",
+                                var name when name.Contains("gia dụng") => "fas fa-blender",
+                                var name when name.Contains("may mặc") || name.Contains("thời trang") => "fas fa-tshirt",
+                                var name when name.Contains("Dành cho bé") && name.Contains("bé") => "fas fa-baby-carriage",
+                                var name when name.Contains("mỹ phẩm") => "fas fa-leaf",
+                                var name when name.Contains("oto") => "fas fa-car",
+                                var name when name.Contains("xe máy") => "fas fa-motorcycle",
+                                _ => "fas fa-box-open" // Default icon
+                            };
+                        }
+
+                        <i class="@iconClass category-icon"></i>
+                        <span class="category-name">@category.CategoryName</span>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    ..sidebar-container {
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar-section {
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        font-size: 22px;
+        color: #444;
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .category-list {
+        display: grid;
+        grid-template-columns: 1fr;
+        row-gap: 15px;
+        padding: 0;
+        list-style: none;
+    }
+
+    .category-item {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .category-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+    .category-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #333;
+        padding: 12px; /* Padding mặc định */
+        border-radius: 6px;
+        transition: background-color 0.3s ease, color 0.3s ease, padding 0.3s ease; /* Thêm hiệu ứng padding */
+    }
+
+        .category-link:hover {
+            background-color: #f1f1f1;
+            color: #4c51bf;
+            padding: 8px; /* Giảm padding khi hover để tạo cảm giác ôm sát */
+        }
+
+        .category-link.active {
+            color: #fff;
+            background-color: #4c51bf;
+        }
+
+    .category-icon {
+        margin-right: 12px;
+        font-size: 20px;
+        color: #4c51bf;
+        transition: color 0.3s ease;
+    }
+
+    .category-link:hover .category-icon {
+        color: #333;
+    }
+
+    .category-name {
+        font-size: 16px;
+        font-weight: 500;
+        color: #444;
+    }
+
+    .category-link:hover .category-name {
+        color: #4c51bf;
+    }
+
+</style>

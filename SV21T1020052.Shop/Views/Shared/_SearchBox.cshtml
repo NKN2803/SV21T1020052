@@ -1,0 +1,88 @@
+﻿@{
+    var searchQuery = Context.Request.Query["query"].ToString();
+}
+
+<div class="search-box-container">
+    <form class="search-form" method="get" action="@Url.Action("Index", "Home")">
+        <input type="search" name="query" class="form-control" placeholder="Tìm kiếm sản phẩm..." value="@searchQuery">
+        <button type="submit" class="search-btn">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+</div>
+
+<style>
+    .search-box-container {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .search-form {
+        display: inline-flex;
+        width: 100%;
+        max-width: 500px;
+        border-radius: 50px;
+        overflow: hidden;
+        background: linear-gradient(145deg, #ffffff, #f7f7f7);
+        border: 1.5px solid #ddd;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+        /* Hover toàn bộ form */
+        .search-form:hover {
+            border-color: #007bff;
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.15);
+        }
+
+        /* Input search */
+        .search-form input {
+            flex: 1;
+            padding: 12px 18px;
+            border: none;
+            font-size: 16px;
+            outline: none;
+            color: #333;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+            .search-form input::placeholder {
+                color: #aaa;
+            }
+
+            /* Focus input */
+            .search-form input:focus {
+                background: #fff;
+            }
+
+    /* Button search */
+    .search-btn {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        border: none;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-radius: 0 50px 50px 0;
+    }
+
+        /* Icon search */
+        .search-btn i {
+            color: #fff;
+            font-size: 18px;
+            transition: transform 0.2s ease;
+        }
+
+        /* Hover button */
+        .search-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #003f88);
+            transform: scale(1.05);
+        }
+
+            .search-btn:hover i {
+                transform: rotate(15deg) scale(1.1);
+            }
+</style>

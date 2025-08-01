@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>4ca5bcd5-aeec-4f84-9b0c-d048c87ea3b9</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="MailChimp.Net.V3" Version="5.6.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SV21T1020052.BusinessLayers\SV21T1020052.BusinessLayers.csproj" />
+    <ProjectReference Include="..\SV21T1020052.DataLayers\SV21T1020052.DataLayers.csproj" />
+    <ProjectReference Include="..\SV21T1020052.DomainModels\SV21T1020052.DomainModels.csproj" />
+  </ItemGroup>
+
+</Project>

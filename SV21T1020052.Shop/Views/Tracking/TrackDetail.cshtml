@@ -1,0 +1,83 @@
+﻿@model SV21T1020052.Shop.Models.OrderTrackingViewModel
+
+@{
+    ViewBag.Title = "Theo dõi đơn hàng - Chi tiết";
+}
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    .tracking-info {
+        margin-top: 20px;
+        font-family: Arial, sans-serif;
+        color: #333;
+    }
+
+        .tracking-info ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .tracking-info li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+            .tracking-info li:last-child {
+                border-bottom: none;
+            }
+
+        .tracking-info strong {
+            color: #007bff;
+        }
+
+    .view-details-btn {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .view-details-btn:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+<h4>Chi tiết theo dõi đơn hàng @Model.Order.OrderId</h4>
+
+<div class="order-details">
+    <p><strong>Khách hàng:</strong> @Model.Order.CustomerName</p>
+    <p><strong>Tổng tiền:</strong> @Model.Order.TotalAmount</p>
+    <p><strong>Trạng thái:</strong> @Model.Order.Status</p>
+</div>
+
+<h5>Hành trình đơn hàng:</h5>
+
+<div class="tracking-info">
+    <ul>
+        @foreach (var tracking in Model.TrackingInfo)
+        {
+            <li>
+                <strong>@tracking.Timestamp</strong>: @tracking.Status - @tracking.Details
+            </li>
+        }
+    </ul>
+</div>
+
+<a href="@Url.Action("TrackOrder", "Tracking")" class="view-details-btn">Quay lại</a>

@@ -1,0 +1,119 @@
+﻿@model SV21T1020052.Web.Models.ProductSearchInput
+@{
+    ViewBag.Title = "Quản lý mặt hàng";
+}
+<div class="box box-primary">
+    <div class="box-body">
+        <!-- Form đầu vào tìm kiếm -->
+        <form id="frmsearchInput" action="~/Product/Search" method="get">
+
+            <input type="hidden" name="@nameof(Model.PageSize)" value="@Model.PageSize" />
+            <div class="row">
+                <div class="col-sm-3">
+                    <label>Loại hàng:</label>
+                    <select class="form-control select2" name="@nameof(Model.categoryID)">
+                        <option value="">-- Chọn Loại Hàng --</option>
+                        @foreach (var item in SV21T1020052.BusinessLayers.CommonDataService.ListCategories())
+                        {
+                            if (item.CategoryID == Model.categoryID)
+                            {
+                                <option value="@item.CategoryID" selected>@item.CategoryName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.CategoryID">@item.CategoryName</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <label>Nhà cung cấp:</label>
+                    <select class="form-control select2" name="SupplierID">
+                        <option value="">-- Chọn Nhà Cung Cấp --</option>   
+                        @foreach (var item in SV21T1020052.BusinessLayers.CommonDataService.ListSuppliers())
+                        {
+                            if (item.SupplierID == Model.supplierID)
+                            {
+                                <option value="@item.SupplierID" selected>@item.SupplierName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.SupplierID">@item.SupplierName</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-1">
+                    <label>Giá từ:</label>
+                    <input type="text" class="form-control number-separator" name="@nameof(Model.minPrice)" value="@Model.minPrice.ToString("N0")">
+                </div>
+                <div class="col-sm-1">
+                    <label>đến:</label>
+                    <input type="text" class="form-control number-separator" name="@nameof(Model.maxPrice)" value="@Model.maxPrice.ToString("N0")">
+                </div>
+                <div class="col-sm-4">
+                    <label>Tên mặt hàng cần tìm:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Nhập mặt hàng hàng cần tìm" autofocus=""
+                               name="@nameof(Model.SearchValue)"
+                               value="@Model.SearchValue">
+                        <div class="input-group-btn">
+                            <button class="btn btn-info" type="submit">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                            <a href="/Product/Create" class="btn btn-primary" style="margin-left:5px">
+                                <i class="fa fa-plus"></i> Bổ sung
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div id="searchResult">
+
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        function doSearch(page) {
+            var searchCondition = $("#frmsearchInput").serializeArray();
+            searchCondition.push({ name: "page", value: page });
+
+            var action = $("#frmsearchInput").prop("action"); //lấy thuộc tính
+            var method = $("#frmsearchInput").prop("method");
+
+            $.ajax({
+                url: action,
+                type: method,
+                data: searchCondition,
+                success: function (data) {
+                    $("#searchResult").html(data);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            doSearch(@Model.Page);
+            $("#frmsearchInput").submit(function (e) {            //xử lý khi người dùng thực hiện chức năng tìm kiếm
+                e.preventDefault();
+                doSearch(1);
+            });
+        });
+            $(document).ready(function () {
+                $(".number-separator").inputmask({
+                    alias: "numeric",
+                    groupSeparator: ",",
+                    autoGroup: true,
+                    digits: 0,
+                    rightAlign: false,
+                    removeMaskOnSubmit: true
+                });
+            })
+    </script>
+}
+
+
+

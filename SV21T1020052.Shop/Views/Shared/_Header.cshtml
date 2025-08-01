@@ -1,0 +1,226 @@
+﻿@using SV21T1020052.Shop.Appcodes
+@using SV21T1020052.DomainModels
+
+<div class="header-wrapper">
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <!-- Logo -->
+                <a href="/" class="logo">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span>Shop NKN</span>
+                </a>
+
+                <!-- Actions -->
+                <div class="header-actions">
+                    <!-- Cart -->
+                    <a href="@Url.Action("Index", "Cart")" class="action-btn cart-icon" title="Giỏ hàng">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">
+                            @{
+                                var cartItems = Context.Session.Get<List<SV21T1020052.DomainModels.Cart>>("Cart");
+                                var cartCount = cartItems?.Count ?? 0;
+                            }
+                            @cartCount
+                        </span>
+                    </a>
+
+                    <!-- User -->
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="dropdown">
+                            <a href="#" class="action-btn user-dropdown" data-bs-toggle="dropdown">
+                                <img src="~/images/Customer/@User.GetUserData().Photo" class="user-image" alt="User Image">
+                                <span>@User.Identity.Name</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="user-header">
+                                    <img src="~/images/Customer/@User.GetUserData().Photo" alt="User Image">
+                                    <p>@User.GetUserData().DisplayName</p>
+                                </li>
+                                <li class="user-footer">
+                                    <a href="~/Account/Profile">Thông tin cá nhân</a>
+                                    <a href="~/Account/ChangePassword">Đổi mật khẩu</a>
+                                    <a href="~/Account/Logout" class="logout-btn">Đăng xuất</a>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <a href="~/Account/Login" class="action-btn" title="Đăng nhập">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </header>
+</div>
+
+<style>
+    /* ===== Header Container ===== */
+    .main-header {
+        background: linear-gradient(135deg, #1f2937, #111827);
+        color: white;
+        padding: 12px 0;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+        position: sticky;
+        top: 0;
+        z-index: 999;
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* ===== Logo ===== */
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: white;
+        font-weight: 700;
+        font-size: 1.6rem;
+        transition: transform 0.3s ease;
+    }
+
+        .logo i {
+            font-size: 2rem;
+            color: #0d6efd;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+            .logo:hover i {
+                transform: rotate(-10deg) scale(1.1);
+            }
+
+    /* ===== Actions ===== */
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+    }
+
+        .header-actions .action-btn {
+            color: white;
+            font-size: 1.2rem;
+            position: relative;
+            text-decoration: none;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+            .header-actions .action-btn:hover {
+                color: #0d6efd;
+                transform: scale(1.15);
+            }
+
+    /* ===== Cart Badge ===== */
+    .cart-count {
+        position: absolute;
+        top: -6px;
+        right: -10px;
+        background: #ff3b3b;
+        color: white;
+        font-size: 0.7rem;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-weight: bold;
+        box-shadow: 0 0 5px rgba(255, 59, 59, 0.8);
+    }
+
+    /* ===== User Dropdown ===== */
+    .user-dropdown {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.95rem;
+        text-decoration: none;
+        color: white;
+        cursor: pointer;
+    }
+
+        .user-dropdown img.user-image {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            object-fit: cover;
+        }
+
+    /* ===== Dropdown Menu ===== */
+    .dropdown-menu {
+        right: 0;
+        left: auto;
+        background: white;
+        border: none;
+        border-radius: 8px;
+        min-width: 230px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        padding: 0;
+        margin-top: 10px;
+        overflow: hidden;
+    }
+
+        .dropdown-menu .user-header {
+            text-align: center;
+            padding: 15px;
+            background: #f9fafb;
+            border-bottom: 1px solid #eee;
+        }
+
+            .dropdown-menu .user-header img {
+                width: 70px;
+                height: 70px;
+                border-radius: 50%;
+                margin-bottom: 8px;
+            }
+
+            .dropdown-menu .user-header p {
+                margin: 0;
+                font-weight: bold;
+                color: #333;
+            }
+
+        .dropdown-menu .user-footer {
+            display: flex;
+            flex-direction: column;
+        }
+
+            .dropdown-menu .user-footer a {
+                text-align: center;
+                padding: 10px;
+                font-size: 0.9rem;
+                text-decoration: none;
+                color: #333;
+                border-top: 1px solid #eee;
+                transition: background 0.3s ease, color 0.3s ease;
+            }
+
+                .dropdown-menu .user-footer a:hover {
+                    background: #0d6efd;
+                    color: white;
+                }
+
+                .dropdown-menu .user-footer a.logout-btn {
+                    background: #f8f9fa;
+                    font-weight: bold;
+                }
+
+                    .dropdown-menu .user-footer a.logout-btn:hover {
+                        background: #ff3b3b;
+                        color: white;
+                    }
+</style>

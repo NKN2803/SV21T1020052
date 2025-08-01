@@ -1,0 +1,23 @@
+﻿@model NhanVien
+@{
+}
+<form action="~/Test/NhapDuLieu" method="post">
+    <div class="form-group">
+        <label>Họ tên:</label>
+        <input type="text" class="form-control" autofocus name="@nameof(Model.HoTen)" value="@Model.HoTen"/>
+    </div>
+
+    <div class="form-group">
+        <label>Ngày sinh:</label>
+        <input type="hidden" name="@nameof(Model.NgaySinh)" value="@Model.NgaySinh" />
+        <input type="text" class="form-control" name="ngaysinh" value=""/>
+    </div>
+
+    <div class="form-group">
+        <label>Lương:</label>
+        <input type="text" class="form-control" name="@nameof(Model.Luong)" value="@Model.Luong" />
+    </div>
+
+    <button type="submit">Submit</button>
+</form>
+

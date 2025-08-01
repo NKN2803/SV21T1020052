@@ -1,0 +1,64 @@
+﻿@model SV21T1020052.Shop.Models.OrderTrackingListViewModel
+
+@{
+    ViewBag.Title = "Theo dõi đơn hàng";
+}
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    .view-details-btn {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .view-details-btn:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+<h4>Theo dõi đơn hàng</h4>
+
+<table>
+    <thead>
+        <tr>
+            <th>Đơn hàng ID</th>
+            <th>Khách hàng</th>
+            <th>Tổng tiền</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model.Orders)
+        {
+            <tr>
+                <td>@order.OrderId</td>
+                <td>@order.CustomerName</td>
+                <td>@order.TotalAmount.ToString("#,0") đ</td>
+                <td>@order.Status</td>
+                <td>
+                    <a href="@Url.Action("TrackDetail", "Tracking", new { orderId = order.OrderId })" class="view-details-btn">Xem chi tiết</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
